@@ -5,7 +5,7 @@ import static network.Network.perceptronsNumber;
 public class Data {
   //  int perceptronsNumber = 8;
     double[] input;
-    float expected;
+    char expected;
 
   public static void main(String[] args) {
     Data data = new Data();

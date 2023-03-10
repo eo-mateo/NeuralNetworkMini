@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Perceptron {
 
     double[] input;
-    float expected;
+    char expected;
     Perceptron inputs[];
     Perceptron nexts[];
     float[] weight;
@@ -39,8 +39,8 @@ public class Perceptron {
 
         // POCZĄTKOWE USTALENIE WAG
         for (int i = 0; i < weightAndInputNumber; i++) {
-            //   double val = (Math.random() * 2) - 1;
-            this.weight[i] = (float)0.5;//(float) val;
+            double val = (Math.random() * 2) - 1;
+            this.weight[i] = (float) val;
             this.weightDelta[i]=0;
         }
         this.bias = 0;
