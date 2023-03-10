@@ -57,17 +57,6 @@ public class Perceptron {
 
     }
 
-    public void run() {
-        //   Perceptron perceptron = new Perceptron();
-        //  perceptron.weight = new float[extInputsNumber];
-        //  perceptron.d = new float[inputsNumber];
-
-
-
-        //     System.out.println("Jesteśmy w main Perceptronu");
-
-
-    }
 
     public double getOutput(int[] input) {
         double[] temp = new double[input.length];

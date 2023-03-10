@@ -25,49 +25,46 @@ public class Network {
         //   System.out.println("START");
 
         // TWORZENIE WARSTW SIECI
-        network.neuron = new Perceptron[2][];
+        network.neuron = new Perceptron[3][];
         network.neuron[0] = new Perceptron[perceptronsNumber];
         network.neuron[1] = new Perceptron[perceptronsNumber];
-        //   network.neuron[2] = new Perceptron[perceptronsNumber];
+        network.neuron[2] = new Perceptron[perceptronsNumber];
 
 
         // WARSTWA 1
         for (int i = 0; i < perceptronsNumber; i++) {
             network.neuron[0][i] = new Perceptron("firstLayer", 4);
             network.neuron[0][i].row = i;
-            network.neuron[0][i].run();
             network.neuron[0][i].inputs = new Perceptron[perceptronsNumber];
         }
 
-   /*     // WARSTWA 2
+        // WARSTWA 2
         for (int i = 0; i < perceptronsNumber; i++) {
             network.neuron[1][i] = new Perceptron("middleLayer",4);
             network.neuron[1][i].row = i;
-            network.neuron[1][i].run();
             network.neuron[1][i].inputs = new Perceptron[perceptronsNumber];
 
             // USTAWIAMY INPUTY Z POPRZEDNIKÓW
             for (int j = 0; j < 4; j++) {
                 network.neuron[1][i].inputs[j] = network.neuron[0][j];
             }
-        } */
+        }
 
         // WARSTWA 3
         for (int i = 0; i < perceptronsNumber; i++) {
-            network.neuron[1][i] = new Perceptron("lastLayer", 4); // było neuron[2][i]
-            network.neuron[1][i].row = i;
-            network.neuron[1][i].run();
-            network.neuron[1][i].inputs = new Perceptron[perceptronsNumber];
+            network.neuron[2][i] = new Perceptron("lastLayer", 4); // było neuron[2][i]
+            network.neuron[2][i].row = i;
+            network.neuron[2][i].inputs = new Perceptron[perceptronsNumber];
 
             // USTAWIAMY INPUTY Z POPRZEDNIKÓW
             for (int j = 0; j < network.neuron[1][i].inputs.length; j++) {
-                network.neuron[1][i].inputs[j] = network.neuron[0][j];
+                network.neuron[2][i].inputs[j] = network.neuron[1][j];
             }
         }
-        network.neuron[1][0].expected = 'l';
-        network.neuron[1][1].expected = 'j';
-        network.neuron[1][2].expected = '^';
-        network.neuron[1][3].expected = '_';
+        network.neuron[2][0].expected = 'l';
+        network.neuron[2][1].expected = 'j';
+        network.neuron[2][2].expected = '^';
+        network.neuron[2][3].expected = '_';
         //    network.neuron[1][2].expected = 'X';
         //    network.neuron[1][3].expected = '/';
 
@@ -78,7 +75,6 @@ public class Network {
             // USTAWIAMY NEXTY
             for (int j = 0; j < network.neuron[0][i].nexts.length; j++) {
                 network.neuron[0][i].nexts[j] = network.neuron[1][j];
-                network.neuron[0][i].run();
             }
         }
 
@@ -101,15 +97,14 @@ public class Network {
         network.neuron[1][1].bias = 0.60f; */
 
 
-    /*    // WARSTWA 2: USTAWIAMY NEXTY
+       // WARSTWA 2: USTAWIAMY NEXTY
         for (int i = 0; i < perceptronsNumber; i++) {
             network.neuron[1][i].nexts = new Perceptron[perceptronsNumber];
             // USTAWIAMY NEXTY
             for (int j = 0; j < 4; j++) {
                 network.neuron[1][i].nexts[j] = network.neuron[2][j];
-                network.neuron[1][i].run();
             }
-        } */
+        }
 
 
         System.out.println("PRZED UCZENIEM, OUTPUT W OSTATNIEJ WARSTWIE:");
@@ -118,8 +113,8 @@ public class Network {
                                       0.7,0.05};
         network.countOutput(network.neuron, input);
 
-        for (int i = 0; i < network.neuron[1].length; i++) {
-            System.out.println(network.neuron[1][i].output);
+        for (int i = 0; i < network.neuron[2].length; i++) {
+            System.out.println(network.neuron[2][i].output);
         }
 // DO TEJ PORY DZIAŁA - FORWARD JEST OK
 
@@ -137,13 +132,14 @@ public class Network {
 
                 network.countOutput(network.neuron, data[j].input);
 
+
+
                 for (int i = 0; i < perceptronsNumber; i++) {
                 // network.startLearn(network.neuron[2][i], data[j].input[i], data[j].expected[i]);
-                      if(network.neuron[1][i].expected==data[j].expected)
-                            network.neuron[1][i].learn(data[j].input, 1); // było: (..., 1);
+                      if(network.neuron[2][i].expected==data[j].expected)
+                            network.neuron[2][i].learn(data[j].input, 1); // było: (..., 1);
                      else
-                            network.neuron[1][i].learn(data[j].input, 0); // SPRAWDZIĆ, dlaczego po pierwszej iteracji, która poprawnie zmienia wagi, mamy próbę odwrotnych wag
-
+                            network.neuron[2][i].learn(data[j].input, 0); // SPRAWDZIĆ, dlaczego po pierwszej iteracji, która poprawnie zmienia wagi, mamy próbę odwrotnych wag
                 }
 
                /* for (int i = 0; i < perceptronsNumber; i++) {
@@ -152,13 +148,24 @@ public class Network {
 
                 } */
 
-                for (int i = 0; i < perceptronsNumber; i++) {
+                for (int i = 0; i < network.neuron[1].length; i++) {
+                    //  network.startLearn(network.neuron[0][i], data[j].input[i], data[j].expected[i]);
+                    network.neuron[1][i].learn(data[j].input, -1);
+                }
+                for (int i = 0; i < network.neuron[0].length; i++) {
                     //  network.startLearn(network.neuron[0][i], data[j].input[i], data[j].expected[i]);
                     network.neuron[0][i].learn(data[j].input, -1);
                 }
 
                 // AKTUALIZUJEMY WAGI
 
+
+                for (int i = 0; i < perceptronsNumber; i++) {
+                    for (int z = 0; z < network.neuron[2][i].weight.length; z++)
+                        network.neuron[2][i].weight[z] += network.neuron[2][i].weightDelta[z];
+                    // System.out.println("N2 i"+i+": "+network.neuron[2][i].weightDelta);
+                    network.neuron[2][i].bias += network.neuron[2][i].biasDelta;
+                }
                 for (int i = 0; i < perceptronsNumber; i++) {
                     for (int z = 0; z < network.neuron[1][i].weight.length; z++)
                         network.neuron[1][i].weight[z] += network.neuron[1][i].weightDelta[z];
@@ -176,6 +183,14 @@ public class Network {
                 }
 
 
+/*
+                for (int i = 0; i < perceptronsNumber; i++) {
+                    for (int z = 0; z < network.neuron[0][i].weight.length; z++)
+                        network.neuron[0][i].weight[z] += network.neuron[0][i].weightDelta[z];
+                    network.neuron[0][i].bias += network.neuron[0][i].biasDelta;
+                } */
+
+
             }
         }
 
@@ -191,16 +206,16 @@ public class Network {
         System.out.println("[0][1]w1 " + network.neuron[0][1].weight[1]);
 
 
-        double[] entrance = new double[]{0.08, 0.7,
-                                         0.07,0.5};;//,
+        double[] entrance = new double[]{0.8, 0.7,
+                                         0.07,0.05};;//,
         //1, 1};
         network.countOutput(network.neuron, entrance);
 
         System.out.println("PO UCZENIU, OUTPUTY W OSTATNIEJ WARSTWIE:");
-        System.out.println("[1][0] " + network.neuron[1][0].output);
-        System.out.println("[1][1] " + network.neuron[1][1].output);
-        System.out.println("[1][2] " + network.neuron[1][2].output);
-        System.out.println("[1][3] " + network.neuron[1][3].output);
+        System.out.println("[2][0] " + network.neuron[2][0].output);
+        System.out.println("[2][1] " + network.neuron[2][1].output);
+        System.out.println("[2][2] " + network.neuron[2][2].output);
+        System.out.println("[2][3] " + network.neuron[2][3].output);
 
     }
 
@@ -235,14 +250,15 @@ public class Network {
 
         }
 
-   /*     // WARSTWA 2
+       // WARSTWA 2
         for (int i = 0; i < perceptronsNumber; i++) {
-            double[] tradere = new double[neuron[2][i].inputs.length];
+          /*  double[] tradere = new double[neuron[2][i].inputs.length];
             for (int j = 0; j < neuron[2][i].inputs.length; j++) {
                 tradere[i] = neuron[2][i].inputs[j].output;
             }
-            neuron[2][i].getOutput(tradere);
-        } */
+            neuron[2][i].getOutput(tradere); */
+            neuron[2][i].getOutput(neuron[2][i].inputs);
+        }
 
 
    /*     System.out.println("\n\nOUTPUT: \n WYNIK ROW 0:");
