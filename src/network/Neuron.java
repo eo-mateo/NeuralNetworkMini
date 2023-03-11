@@ -1,15 +1,11 @@
 package network;
 
-import jdk.swing.interop.SwingInterOpUtils;
-
-import java.util.Objects;
-
-public class Perceptron {
+public class Neuron {
 
     double[] input;
     char expected;
-    Perceptron inputs[];
-    Perceptron nexts[];
+    Neuron inputs[];
+    Neuron nexts[];
     float[] weight;
     float[] weightDelta;
     float bias;
@@ -24,8 +20,7 @@ public class Perceptron {
     static int extInputsNumber = 9; //
 
 
-    public
-    Perceptron(String mode, int weightAndInputNumber) {
+    public Neuron(String mode, int weightAndInputNumber) {
 
         this.mode = mode;
 
@@ -48,7 +43,7 @@ public class Perceptron {
 
     }
 
-    public Perceptron() {
+    public Neuron() {
 
     }
 
@@ -84,7 +79,7 @@ public class Perceptron {
 
     }
 
-    public double getOutput(Perceptron[] input) {
+    public double getOutput(Neuron[] input) {
 
         double[] tradere = new double[input.length];
 

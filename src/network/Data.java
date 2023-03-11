@@ -1,6 +1,6 @@
 package network;
 
-import static network.Network.perceptronsNumber;
+import static network.Network.NEURONS_IN_LAYER;
 
 public class Data {
   //  int perceptronsNumber = 8;
@@ -9,7 +9,7 @@ public class Data {
 
   public static void main(String[] args) {
     Data data = new Data();
-    data.input = new double[perceptronsNumber];
+    data.input = new double[NEURONS_IN_LAYER];
    // for (int i=0;i<perceptronsNumber;i++){
       data.input = new double[2];
  //   }
