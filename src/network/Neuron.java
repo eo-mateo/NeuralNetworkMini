@@ -76,7 +76,6 @@ public class Neuron {
 
         output = sigmoid(value);
         return output;
-
     }
 
     public double getOutput(Neuron[] input) {
@@ -88,7 +87,6 @@ public class Neuron {
         }
         return getOutput(tradere);
     }
-
 
     private static double sigmoid(double x) {
         return 1 / (1 + Math.exp(-x));
@@ -126,14 +124,10 @@ public class Neuron {
         // OBLICZAMY D, CZYLI WSPÓŁCZYNNIK POMOCNICZY BŁĘDU
         // OBLICZAMY WAGI
 
-
         for (int i = 0; i < this.weight.length; i++) {
             if ("lastLayer".equals(this.mode)) {
-                double deriv = expected-output;
                 this.d = sigmoidPrim(sum) * (expected-output);
                 this.weightDelta[i] = (float)(q*this.d * this.inputs[i].output); // Było jeszcze *q i "+="
-                double wyjsc = this.weight[i]+this.weightDelta[i];
-                System.out.println("this.weightDelta["+i+"]="+this.weightDelta[i]+"; q * "+this.d+"* this.inputs[i].output: "+this.inputs[i].output+"; WYJSC: "+wyjsc);
             } else {
                 this.d = 0;
 
@@ -148,12 +142,9 @@ public class Neuron {
                 }
             }
         }
-
         // Dodajemy wagi-biasy
 
             this.biasDelta = (float)(q * this.d);
-
-
     }
 
     public void getWeights() {
